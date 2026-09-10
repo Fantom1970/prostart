@@ -1,0 +1,16 @@
+# Dados e backups
+*.backup
+*.sql.gz
+
+# Node-RED
+node_modules/
+
+# Docker
+.env
+
+# Logs
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db

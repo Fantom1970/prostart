@@ -1,0 +1,508 @@
+[
+    {
+        "id": "860704c4ec7616df",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "6",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "6941938a7e8e1be1",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "UHT",
+            "hideToolbar": "false",
+            "allowSwipe": "true",
+            "lockMenu": "icon",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "2111b3674201f14b",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "7d5463644be27435",
+        "type": "ui_tab",
+        "name": "UHT",
+        "icon": "whatshot",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "db5a6a56444a4bdb",
+        "type": "ui_tab",
+        "name": "OPMenu",
+        "icon": "menu",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "2df436e5c0b46ada",
+        "type": "ui_tab",
+        "name": "SignIn",
+        "icon": "login",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "39a7dc0d08220927",
+        "type": "ui_group",
+        "name": "SignIn",
+        "tab": "2df436e5c0b46ada",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "053185fbdfe7afdc",
+        "type": "ui_tab",
+        "name": "Flow",
+        "icon": "dashboard",
+        "order": 4,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "455ff71b5a986488",
+        "type": "ui_group",
+        "name": "Feed",
+        "tab": "053185fbdfe7afdc",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e39554035b7dc5ef",
+        "type": "ui_group",
+        "name": "Overview",
+        "tab": "7d5463644be27435",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "88217d9d849a061c",
+        "type": "ui_group",
+        "name": "OPMenu",
+        "tab": "db5a6a56444a4bdb",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "535114680f09c40b",
+        "type": "eth-ip endpoint",
+        "z": "860704c4ec7616df",
+        "d": true,
+        "address": "192.168.1.50",
+        "slot": "",
+        "cycletime": 500,
+        "name": "Rockwell",
+        "vartable": {
+            "": {
+                "HMI_DeaeratorSelected": {
+                    "type": "BOOL"
+                },
+                "HMI_IND_Analog[17]": {
+                    "type": "REAL"
+                },
+                "HMI_IND_StepNumber": {
+                    "type": "DINT"
+                }
+            }
+        }
+    },
+    {
+        "id": "b2c38bc3caa60efa",
+        "type": "ui_tab",
+        "name": "Step",
+        "icon": "dashboard",
+        "order": 6,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "9736918822ff789b",
+        "type": "ui_group",
+        "name": "Step",
+        "tab": "b2c38bc3caa60efa",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "19862059796b1014",
+        "type": "postgreSQLConfig",
+        "name": "Production",
+        "host": "127.0.0.1",
+        "hostFieldType": "str",
+        "port": 5432,
+        "portFieldType": "num",
+        "database": "Production",
+        "databaseFieldType": "str",
+        "ssl": "false",
+        "sslFieldType": "bool",
+        "applicationName": "",
+        "applicationNameType": "str",
+        "max": 10,
+        "maxFieldType": "num",
+        "idle": 1000,
+        "idleFieldType": "num",
+        "connectionTimeout": 10000,
+        "connectionTimeoutFieldType": "num",
+        "user": "postgres",
+        "userFieldType": "str",
+        "password": "Fantom1970@Po",
+        "passwordFieldType": "str"
+    },
+    {
+        "id": "b8b8ecab68343648",
+        "type": "eth-ip endpoint",
+        "d": true,
+        "address": "192.168.1.50",
+        "slot": "0",
+        "cycletime": 500,
+        "name": "TA DRINK",
+        "vartable": {
+            "": {
+                "HMI_IND_StepNumber": {
+                    "type": "DINT"
+                }
+            }
+        }
+    },
+    {
+        "id": "1770bcfc47038362",
+        "type": "inject",
+        "z": "860704c4ec7616df",
+        "name": "",
+        "props": [],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 240,
+        "wires": [
+            [
+                "5f4c8d7fd6c6a566",
+                "24f8fe08f9e26b8e"
+            ]
+        ]
+    },
+    {
+        "id": "5f4c8d7fd6c6a566",
+        "type": "function",
+        "z": "860704c4ec7616df",
+        "name": "function 3",
+        "func": "// Inicialização segura\nif (flow.get(\"step\") === undefined) {\n    flow.set(\"step\", 1);\n    flow.set(\"tick\", 0);\n}\n\nlet step = flow.get(\"step\");\nlet tick = flow.get(\"tick\");\n\n// Incrementa tick (1 tick = 1 segundo real)\ntick++;\n\n// Tempo em SEGUNDOS reais\nfunction residence(step) {\n\n    if (step === 27) return 36000;  // 10 horas\n    if (step === 0) return 7200;    // 2 horas parado\n    if (step === 6) return 1800;    // 30 min\n    if (step === 106 || step === 126) return 1800;\n\n    if ((step >= 1 && step <= 71) ||\n        (step >= 101 && step <= 197)) {\n        return 60; // 1 minuto\n    }\n\n    return 60;\n}\n\nlet residenceTime = residence(step);\n\n// Avança quando atingir o tempo real\nif (tick >= residenceTime) {\n\n    step++;\n\n    if (step > 197) {\n        step = 0;\n    }\n\n    if (step >= 72 && step <= 100) {\n        step = 101;\n    }\n\n    tick = 0;\n}\n\n// Salva estado\nflow.set(\"step\", step);\nflow.set(\"tick\", tick);\n\nmsg.payload = step;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 240,
+        "wires": [
+            [
+                "cd249805867226ef",
+                "d965f35c34acdee0"
+            ]
+        ]
+    },
+    {
+        "id": "16ef1d8621f6f518",
+        "type": "eth-ip in",
+        "z": "860704c4ec7616df",
+        "d": true,
+        "endpoint": "535114680f09c40b",
+        "mode": "single",
+        "variable": "HMI_IND_StepNumber",
+        "program": "",
+        "name": "Step",
+        "x": 310,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cd249805867226ef",
+        "type": "mqtt out",
+        "z": "860704c4ec7616df",
+        "name": "",
+        "topic": "Step",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "2111b3674201f14b",
+        "x": 510,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "388b446485522f5b",
+        "type": "function",
+        "z": "860704c4ec7616df",
+        "name": "function 1",
+        "func": "// ===== CONFIGURAÇÃO =====\nlet clientId = 1;                  \nlet clientName = \"BONOLAT\";   // NOVO\nlet equipmentName = \"TA DRINK\";      \n// =========================\n\nlet previousStep = flow.get(\"previousStep\");\nlet currentStep = Number(msg.payload);\nlet now = new Date();\n\n// ===== PRIMEIRA EXECUÇÃO =====\nif (previousStep === undefined) {\n    flow.set(\"previousStep\", currentStep);\n\n    return {\n        query: `\n            INSERT INTO process_events\n            (client_id, client_name, equipment, step, start_time)\n            VALUES ($1, $2, $3, $4, $5)\n        `,\n        params: [clientId, clientName, equipmentName, currentStep, now]\n    };\n}\n\n// ===== SE NÃO MUDOU =====\nif (currentStep === previousStep) {\n    return null;\n}\n\n// ===== SE MUDOU =====\nflow.set(\"previousStep\", currentStep);\n\n// Fecha evento anterior\nlet updateMsg = {\n    query: `\n        UPDATE process_events\n        SET end_time = $1\n        WHERE equipment = $2\n        AND client_id = $3\n        AND end_time IS NULL\n    `,\n    params: [now, equipmentName, clientId]\n};\n\n// Insere novo evento\nlet insertMsg = {\n    query: `\n        INSERT INTO process_events\n        (client_id, client_name, equipment, step, start_time)\n        VALUES ($1, $2, $3, $4, $5)\n    `,\n    params: [clientId, clientName, equipmentName, currentStep, now]\n};\n\n// Envia as duas queries pela mesma saída\nreturn [[updateMsg, insertMsg]];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 540,
+        "wires": [
+            [
+                "f4fd11d11dd998e5",
+                "efa6ac26106fd63f"
+            ]
+        ]
+    },
+    {
+        "id": "f4fd11d11dd998e5",
+        "type": "postgresql",
+        "z": "860704c4ec7616df",
+        "name": "Production",
+        "query": "",
+        "postgreSQLConfig": "19862059796b1014",
+        "split": false,
+        "rowsPerMsg": 1,
+        "outputs": 1,
+        "x": 730,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "be09b25b3f8aa4ce",
+        "type": "mqtt in",
+        "z": "860704c4ec7616df",
+        "name": "",
+        "topic": "Step",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "2111b3674201f14b",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 330,
+        "y": 540,
+        "wires": [
+            [
+                "388b446485522f5b",
+                "f6880a7c0536ab81"
+            ]
+        ]
+    },
+    {
+        "id": "d965f35c34acdee0",
+        "type": "debug",
+        "z": "860704c4ec7616df",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "24f8fe08f9e26b8e",
+        "type": "debug",
+        "z": "860704c4ec7616df",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 210,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "f6880a7c0536ab81",
+        "type": "debug",
+        "z": "860704c4ec7616df",
+        "name": "debug 3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "efa6ac26106fd63f",
+        "type": "debug",
+        "z": "860704c4ec7616df",
+        "name": "debug 4",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 640,
+        "wires": []
+    }
+]
