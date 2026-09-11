@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict SbbUrRbNXI7unLAjkaP1RMASiNqOxBriV36hdTWhCgnwobIKKLcWveKuSaENNsb
+\restrict 7rMM97LjFCiyHlOHmnHgMM5pzvVxoHoOL9JQIYHFoDDFVKsPwuctLYYAmoAed4G
 
 -- Dumped from database version 17.11
 -- Dumped by pg_dump version 17.11
@@ -191,6 +191,40 @@ ALTER SEQUENCE public.steps_id_seq OWNED BY public.steps.id;
 
 
 --
+-- Name: telemetry; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.telemetry (
+    id bigint NOT NULL,
+    ent_id integer NOT NULL,
+    un_id integer NOT NULL,
+    tel_nam character varying(100) NOT NULL,
+    tel_val real NOT NULL,
+    tel_bgn timestamp without time zone DEFAULT now() NOT NULL,
+    db_crt timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: telemetry_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.telemetry_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: telemetry_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.telemetry_id_seq OWNED BY public.telemetry.id;
+
+
+--
 -- Name: units; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -300,6 +334,13 @@ ALTER TABLE ONLY public.steps ALTER COLUMN id SET DEFAULT nextval('public.steps_
 
 
 --
+-- Name: telemetry id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.telemetry ALTER COLUMN id SET DEFAULT nextval('public.telemetry_id_seq'::regclass);
+
+
+--
 -- Name: units un_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -351,6 +392,14 @@ ALTER TABLE ONLY public.step_catalog
 
 ALTER TABLE ONLY public.steps
     ADD CONSTRAINT steps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: telemetry telemetry_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.telemetry
+    ADD CONSTRAINT telemetry_pkey PRIMARY KEY (id);
 
 
 --
@@ -418,6 +467,27 @@ CREATE INDEX idx_steps_end ON public.steps USING btree (stp_end);
 --
 
 CREATE INDEX idx_steps_unit ON public.steps USING btree (un_id, ent_id);
+
+
+--
+-- Name: idx_telemetry_bgn; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_telemetry_bgn ON public.telemetry USING btree (tel_bgn);
+
+
+--
+-- Name: idx_telemetry_nam; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_telemetry_nam ON public.telemetry USING btree (tel_nam);
+
+
+--
+-- Name: idx_telemetry_unit; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_telemetry_unit ON public.telemetry USING btree (un_id, ent_id);
 
 
 --
@@ -498,6 +568,22 @@ ALTER TABLE ONLY public.steps
 
 
 --
+-- Name: telemetry telemetry_ent_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.telemetry
+    ADD CONSTRAINT telemetry_ent_id_fkey FOREIGN KEY (ent_id) REFERENCES public.enterprises(ent_id);
+
+
+--
+-- Name: telemetry telemetry_un_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.telemetry
+    ADD CONSTRAINT telemetry_un_id_fkey FOREIGN KEY (un_id) REFERENCES public.units(un_id);
+
+
+--
 -- Name: units units_ent_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -545,5 +631,5 @@ ALTER DEFAULT PRIVILEGES FOR ROLE prostart IN SCHEMA telemetry GRANT SELECT ON T
 -- PostgreSQL database dump complete
 --
 
-\unrestrict SbbUrRbNXI7unLAjkaP1RMASiNqOxBriV36hdTWhCgnwobIKKLcWveKuSaENNsb
+\unrestrict 7rMM97LjFCiyHlOHmnHgMM5pzvVxoHoOL9JQIYHFoDDFVKsPwuctLYYAmoAed4G
 
