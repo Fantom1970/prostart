@@ -134,7 +134,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT s.sta_bgn AS time, COALESCE(s.sta_end, NOW()) AS time_end, s.sta_id AS state, u.un_nam AS unit, CASE u.un_id WHEN 610 THEN 1 WHEN 620 THEN 2 WHEN 802 THEN 3 WHEN 6000 THEN 4 WHEN 902 THEN 5 WHEN 912 THEN 6 WHEN 922 THEN 7 WHEN 932 THEN 8 WHEN 942 THEN 9 END AS sort_order FROM status s JOIN units u ON s.un_id = u.un_id WHERE s.ent_id = 1 AND s.un_id IN (610, 620, 802, 6000, 902, 912, 922, 932, 942) AND s.sta_bgn >= $__timeFrom() AND s.sta_bgn <= $__timeTo() ORDER BY sort_order, s.sta_bgn",
+          "rawSql": "SELECT\r\n  s.sta_bgn AS \"time\",\r\n  LEAST(COALESCE(s.sta_end, NOW()), $__timeTo()) AS \"time_end\",\r\n  s.sta_id AS \"state\",\r\n  u.un_nam AS \"unit\",\r\n  CASE u.un_id\r\n    WHEN 610  THEN 1\r\n    WHEN 620  THEN 2\r\n    WHEN 802  THEN 3\r\n    WHEN 6000 THEN 4\r\n    WHEN 902  THEN 5\r\n    WHEN 912  THEN 6\r\n    WHEN 922  THEN 7\r\n    WHEN 932  THEN 8\r\n    WHEN 942  THEN 9\r\n  END AS \"sort_order\"\r\nFROM status s\r\nJOIN units u ON s.un_id = u.un_id\r\nWHERE s.ent_id = 1\r\n  AND s.un_id IN (610, 620, 802, 6000, 902, 912, 922, 932, 942)\r\n  AND s.sta_bgn >= $__timeFrom()\r\n  AND s.sta_bgn <= $__timeTo()\r\n\r\nUNION ALL\r\n\r\nSELECT\r\n  $__timeFrom() AS \"time\",\r\n  LEAST(COALESCE(s.sta_end, NOW()), $__timeTo()) AS \"time_end\",\r\n  s.sta_id AS \"state\",\r\n  u.un_nam AS \"unit\",\r\n  CASE u.un_id\r\n    WHEN 610  THEN 1\r\n    WHEN 620  THEN 2\r\n    WHEN 802  THEN 3\r\n    WHEN 6000 THEN 4\r\n    WHEN 902  THEN 5\r\n    WHEN 912  THEN 6\r\n    WHEN 922  THEN 7\r\n    WHEN 932  THEN 8\r\n    WHEN 942  THEN 9\r\n  END AS \"sort_order\"\r\nFROM status s\r\nJOIN units u ON s.un_id = u.un_id\r\nWHERE s.ent_id = 1\r\n  AND s.un_id IN (610, 620, 802, 6000, 902, 912, 922, 932, 942)\r\n  AND s.sta_bgn < $__timeFrom()\r\n  AND (s.sta_end IS NULL OR s.sta_end > $__timeFrom())\r\nORDER BY sort_order, \"time\"",
           "refId": "A",
           "sql": {
             "columns": [
@@ -217,5 +217,5 @@
   "timezone": "browser",
   "title": "Status Line 2",
   "uid": "adjfzxv",
-  "version": 2
+  "version": 4
 }
