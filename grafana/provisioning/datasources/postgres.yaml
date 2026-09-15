@@ -1,17 +1,17 @@
 apiVersion: 1
-
 datasources:
   - name: PostgreSQL-ProStart
     type: postgres
+    uid: PE02C6D58FFD076CD
     access: proxy
-    isDefault: true
-    editable: true
-    database: prostart
+    url: db:5432
     user: grafana_reader
     secureJsonData:
-      password: 'Grafana@Dev2026'
+      password: ${GRAFANA_READER_PASSWORD}
     jsonData:
+      database: prostart
       sslmode: disable
       postgresVersion: 1700
       timescaledb: true
-    url: db:5432
+    isDefault: true
+    editable: true

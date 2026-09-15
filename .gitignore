@@ -19,3 +19,7 @@ nodered/data/.config.users.json
 *:Zone.Identifier
 *.db
 *.sqlite
+backups/
+backups/
+grafana.db.bak
+*.bak
