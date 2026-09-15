@@ -1,0 +1,524 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 4448504274968576,
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 70,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "#808080",
+                  "text": "Sem Producao"
+                },
+                "1": {
+                  "color": "#FFD700",
+                  "text": "CIP"
+                },
+                "10": {
+                  "color": "#8A2BE2",
+                  "text": "Recirc. Tanque"
+                },
+                "12": {
+                  "color": "#FF4500",
+                  "text": "Manutencao"
+                },
+                "4": {
+                  "color": "#FFA500",
+                  "text": "Esterilizacao"
+                },
+                "5": {
+                  "color": "#1E90FF",
+                  "text": "Setup"
+                },
+                "6": {
+                  "color": "#32CD32",
+                  "text": "Producao"
+                },
+                "9": {
+                  "color": "#9370DB",
+                  "text": "Recirc. Past."
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "alignValue": "left",
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.0.2",
+      "targets": [
+        {
+          "dataset": "",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \r\n  sta_bgn AS \"time\",\r\n  COALESCE(sta_end, NOW()) AS \"time_end\",\r\n  sta_id AS \"state\"\r\nFROM status \r\nWHERE un_id = 801 AND ent_id = 1\r\n  AND sta_bgn >= $__timeFrom()\r\n  AND sta_bgn <= $__timeTo()\r\nORDER BY sta_bgn",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Timeline",
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          }
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH ordered AS (\n  SELECT sta_id, sta_bgn, LEAD(sta_bgn) OVER (ORDER BY sta_bgn) AS ns\n  FROM status WHERE un_id = 801 AND ent_id = 1\n),\nclipped AS (\n  SELECT sta_id, GREATEST(sta_bgn, $__timeFrom()) AS sc,\n    LEAST(COALESCE(ns, sta_bgn), $__timeTo()) AS ec\n  FROM ordered WHERE sta_bgn < $__timeTo() AND COALESCE(ns, sta_bgn) > $__timeFrom()\n),\ndur AS (\n  SELECT sta_id, EXTRACT(EPOCH FROM (ec - sc)) AS ds FROM clipped\n)\nSELECT\n  SUM(CASE WHEN sta_id = 6 THEN ds ELSE 0 END)/3600 AS \"Producao\",\n  SUM(CASE WHEN sta_id = 4 THEN ds ELSE 0 END)/3600 AS \"Esterilizacao\",\n  SUM(CASE WHEN sta_id = 1 THEN ds ELSE 0 END)/3600 AS \"CIP\",\n  SUM(CASE WHEN sta_id = 0 THEN ds ELSE 0 END)/3600 AS \"Sem Producao\",\n  SUM(CASE WHEN sta_id = 5 THEN ds ELSE 0 END)/3600 AS \"Setup\",\n  SUM(CASE WHEN sta_id = 12 THEN ds ELSE 0 END)/3600 AS \"Manutencao\"",
+          "refId": "A"
+        }
+      ],
+      "title": "Distribution",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 70
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 10
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH ordered AS (\n  SELECT sta_id, sta_bgn, LEAD(sta_bgn) OVER (ORDER BY sta_bgn) AS ns\n  FROM status WHERE un_id = 801 AND ent_id = 1\n),\nclipped AS (\n  SELECT sta_id, GREATEST(sta_bgn, $__timeFrom()) AS sc,\n    LEAST(COALESCE(ns, sta_bgn), $__timeTo()) AS ec\n  FROM ordered WHERE sta_bgn < $__timeTo() AND COALESCE(ns, sta_bgn) > $__timeFrom()\n),\ndur AS (\n  SELECT sta_id, EXTRACT(EPOCH FROM (ec - sc)) AS ds FROM clipped\n)\nSELECT ROUND((SUM(CASE WHEN sta_id = 6 THEN ds ELSE 0 END) / NULLIF(SUM(ds), 0)) * 100, 1) AS oee",
+          "refId": "A"
+        }
+      ],
+      "title": "OEE",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "h"
+        }
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 10
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH ordered AS (\n  SELECT sta_id, sta_bgn, LEAD(sta_bgn) OVER (ORDER BY sta_bgn) AS ns\n  FROM status WHERE un_id = 801 AND ent_id = 1\n),\nclipped AS (\n  SELECT sta_id, GREATEST(sta_bgn, $__timeFrom()) AS sc,\n    LEAST(COALESCE(ns, sta_bgn), $__timeTo()) AS ec\n  FROM ordered WHERE sta_bgn < $__timeTo() AND COALESCE(ns, sta_bgn) > $__timeFrom()\n),\ndur AS (\n  SELECT sta_id, EXTRACT(EPOCH FROM (ec - sc)) AS ds FROM clipped\n)\nSELECT ROUND(SUM(CASE WHEN sta_id = 6 THEN ds ELSE 0 END)/3600, 1) AS horas",
+          "refId": "A"
+        }
+      ],
+      "title": "PRODUCAO (h)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "h"
+        }
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 10
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH ordered AS (\n  SELECT sta_id, sta_bgn, LEAD(sta_bgn) OVER (ORDER BY sta_bgn) AS ns\n  FROM status WHERE un_id = 801 AND ent_id = 1\n),\nclipped AS (\n  SELECT sta_id, GREATEST(sta_bgn, $__timeFrom()) AS sc,\n    LEAST(COALESCE(ns, sta_bgn), $__timeTo()) AS ec\n  FROM ordered WHERE sta_bgn < $__timeTo() AND COALESCE(ns, sta_bgn) > $__timeFrom()\n),\ndur AS (\n  SELECT sta_id, EXTRACT(EPOCH FROM (ec - sc)) AS ds FROM clipped\n)\nSELECT ROUND(SUM(ds)/3600, 1) AS total",
+          "refId": "A"
+        }
+      ],
+      "title": "TOTAL (h)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "h"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 3,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "13.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH ordered AS (\n  SELECT sta_id, sta_bgn, LEAD(sta_bgn) OVER (ORDER BY sta_bgn) AS ns\n  FROM status WHERE un_id = 801 AND ent_id = 1\n),\nclipped AS (\n  SELECT sta_id, GREATEST(sta_bgn, $__timeFrom()) AS sc,\n    LEAST(COALESCE(ns, sta_bgn), $__timeTo()) AS ec\n  FROM ordered WHERE sta_bgn < $__timeTo() AND COALESCE(ns, sta_bgn) > $__timeFrom()\n),\ndur AS (\n  SELECT sta_id, EXTRACT(EPOCH FROM (ec - sc)) AS ds FROM clipped\n)\nSELECT\n  SUM(CASE WHEN sta_id = 0 THEN ds ELSE 0 END)/3600 AS \"Sem Producao\",\n  SUM(CASE WHEN sta_id = 1 THEN ds ELSE 0 END)/3600 AS \"CIP\",\n  SUM(CASE WHEN sta_id = 4 THEN ds ELSE 0 END)/3600 AS \"Esterilizacao\",\n  SUM(CASE WHEN sta_id = 5 THEN ds ELSE 0 END)/3600 AS \"Setup\",\n  SUM(CASE WHEN sta_id = 6 THEN ds ELSE 0 END)/3600 AS \"Producao\",\n  SUM(CASE WHEN sta_id = 9 THEN ds ELSE 0 END)/3600 AS \"Recirc Past\",\n  SUM(CASE WHEN sta_id = 10 THEN ds ELSE 0 END)/3600 AS \"Recirc Tanque\",\n  SUM(CASE WHEN sta_id = 12 THEN ds ELSE 0 END)/3600 AS \"Manutencao\"",
+          "refId": "A"
+        }
+      ],
+      "title": "Steps",
+      "type": "bargauge"
+    }
+  ],
+  "preload": false,
+  "refresh": "30s",
+  "schemaVersion": 42,
+  "tags": [
+    "prostart"
+  ],
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Steps",
+  "uid": "adwqwrr",
+  "version": 9
+}

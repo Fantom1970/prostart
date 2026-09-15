@@ -1,0 +1,817 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 4430874979799040,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "dark-green",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 7,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^percent$/",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "text": {
+          "valueSize": 40
+        }
+      },
+      "pluginVersion": "12.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH ordered AS (\n  SELECT sta_id, sta_bgn, LEAD(sta_bgn) OVER (ORDER BY sta_bgn) AS ns\n  FROM status WHERE un_id = 801 AND ent_id = 1\n),\nclipped AS (\n  SELECT sta_id, GREATEST(sta_bgn, to_timestamp($__unixEpochFrom())) AS sc,\n    LEAST(COALESCE(ns, to_timestamp($__unixEpochTo())), to_timestamp($__unixEpochTo())) AS ec\n  FROM ordered WHERE sta_bgn < to_timestamp($__unixEpochTo())\n    AND COALESCE(ns, to_timestamp($__unixEpochTo())) > to_timestamp($__unixEpochFrom())\n),\nd AS (SELECT sta_id, EXTRACT(EPOCH FROM (ec - sc)) AS ds FROM clipped),\np AS (SELECT SUM(CASE WHEN sta_id = 6 THEN ds ELSE 0 END)/3600 * ${taxa_producao} AS produced FROM d),\nt AS (SELECT EXTRACT(EPOCH FROM (to_timestamp($__unixEpochTo()) - to_timestamp($__unixEpochFrom())))/3600 * ${taxa_producao} AS target)\nSELECT produced, target, (produced/target)*100 AS percent FROM p, t",
+          "refId": "A"
+        }
+      ],
+      "title": "Production Today",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Pasteurizador 801",
+            "axisPlacement": "auto",
+            "axisWidth": 95,
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 0,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "fieldMinMax": true,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 70000
+              },
+              {
+                "color": "dark-green",
+                "value": 90000
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 7,
+        "x": 7,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.3,
+        "colorByField": "produced",
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "text": {},
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xField": "percent",
+        "xTickLabelRotation": 45,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH ordered AS (\n  SELECT sta_id, sta_bgn, LEAD(sta_bgn) OVER (ORDER BY sta_bgn) AS ns\n  FROM status WHERE un_id = 801 AND ent_id = 1\n),\nclipped AS (\n  SELECT sta_id, GREATEST(sta_bgn, to_timestamp($__unixEpochFrom())) AS sc,\n    LEAST(COALESCE(ns, to_timestamp($__unixEpochTo())), to_timestamp($__unixEpochTo())) AS ec\n  FROM ordered WHERE sta_bgn < to_timestamp($__unixEpochTo())\n    AND COALESCE(ns, to_timestamp($__unixEpochTo())) > to_timestamp($__unixEpochFrom())\n),\nd AS (SELECT sta_id, EXTRACT(EPOCH FROM (ec - sc)) AS ds FROM clipped),\np AS (SELECT SUM(CASE WHEN sta_id = 6 THEN ds ELSE 0 END)/3600 * ${taxa_producao} AS produced FROM d),\nt AS (SELECT EXTRACT(EPOCH FROM (to_timestamp($__unixEpochTo()) - to_timestamp($__unixEpochFrom())))/3600 * ${taxa_producao} AS target)\nSELECT produced, target, (produced/target)*100 AS percent FROM p, t",
+          "refId": "A"
+        }
+      ],
+      "title": "Production Per Line",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "produced",
+                "percent"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Produ\u00e7\u00e3o (h)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Esteriliza\u00e7\u00e3o (h)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CIP (h)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total (h)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ffffff",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "OEE (%)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sem Produ\u00e7\u00e3o (h)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#808080",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pronto/Setup (h)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#642323",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Manuten\u00e7\u00e3o (h)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 7,
+        "x": 14,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "top",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH ordered AS (\n  SELECT sta_id, sta_bgn,\n    LEAD(sta_bgn) OVER (ORDER BY sta_bgn) AS next_start\n  FROM status WHERE un_id = 801 AND ent_id = 1\n),\nclipped AS (\n  SELECT sta_id,\n    GREATEST(sta_bgn, $__timeFrom()) AS start_clip,\n    LEAST(COALESCE(next_start, $__timeTo()), $__timeTo()) AS end_clip\n  FROM ordered\n  WHERE sta_bgn < $__timeTo() AND COALESCE(next_start, $__timeTo()) > $__timeFrom()\n),\ndurations AS (\n  SELECT sta_id, EXTRACT(EPOCH FROM (end_clip - start_clip)) AS ds FROM clipped\n)\nSELECT\n  SUM(CASE WHEN sta_id = 6 THEN ds ELSE 0 END)/3600 AS \"Produ\u00e7\u00e3o (h)\",\n  SUM(CASE WHEN sta_id = 4 THEN ds ELSE 0 END)/3600 AS \"Esteriliza\u00e7\u00e3o (h)\",\n  SUM(CASE WHEN sta_id = 1 THEN ds ELSE 0 END)/3600 AS \"CIP (h)\",\n  SUM(CASE WHEN sta_id = 0 THEN ds ELSE 0 END)/3600 AS \"Sem Produ\u00e7\u00e3o (h)\",\n  SUM(CASE WHEN sta_id = 5 THEN ds ELSE 0 END)/3600 AS \"Pronto/Setup (h)\",\n  SUM(CASE WHEN sta_id = 12 THEN ds ELSE 0 END)/3600 AS \"Manuten\u00e7\u00e3o (h)\",\n  SUM(ds)/3600 AS \"Total (h)\",\n  (SUM(CASE WHEN sta_id = 6 THEN ds ELSE 0 END) / SUM(ds)) * 100 AS \"OEE (%)\"\nFROM durations",
+          "refId": "A"
+        }
+      ],
+      "title": "Steps",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Produ\u00e7\u00e3o (h)",
+                "Esteriliza\u00e7\u00e3o (h)",
+                "CIP (h)",
+                "Sem Produ\u00e7\u00e3o (h)",
+                "Pronto/Setup (h)",
+                "Manuten\u00e7\u00e3o (h)",
+                "Total (h)",
+                "OEE (%)"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": true,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 1000
+              },
+              {
+                "color": "dark-green",
+                "value": 2000
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 7,
+        "x": 14,
+        "y": 6
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH ordered AS (\n  SELECT sta_id, sta_bgn, LEAD(sta_bgn) OVER (ORDER BY sta_bgn) AS ns\n  FROM status WHERE un_id = 801 AND ent_id = 1\n),\nclipped AS (\n  SELECT sta_id, GREATEST(sta_bgn, to_timestamp($__unixEpochFrom())) AS sc,\n    LEAST(COALESCE(ns, to_timestamp($__unixEpochTo())), to_timestamp($__unixEpochTo())) AS ec\n  FROM ordered WHERE sta_bgn < to_timestamp($__unixEpochTo())\n    AND COALESCE(ns, to_timestamp($__unixEpochTo())) > to_timestamp($__unixEpochFrom())\n),\nd AS (SELECT sta_id, EXTRACT(EPOCH FROM (ec - sc)) AS ds FROM clipped)\nSELECT ${taxa_producao} * SUM(CASE WHEN sta_id = 6 THEN ds ELSE 0 END) / ($__unixEpochTo() - $__unixEpochFrom()) AS taxa_media_emb_h\nFROM d",
+          "refId": "A"
+        }
+      ],
+      "title": "Production Per Line",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "taxa_media_emb_h"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 50,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 7,
+        "x": 0,
+        "y": 9
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH tl AS (\n  SELECT generate_series(to_timestamp($__unixEpochFrom()), to_timestamp($__unixEpochTo()), interval '1 minute') AS bucket\n),\nordered AS (\n  SELECT sta_id, sta_bgn, LEAD(sta_bgn) OVER (ORDER BY sta_bgn) AS ns\n  FROM status WHERE un_id = 801 AND ent_id = 1\n),\niv AS (SELECT bucket, bucket + interval '1 minute' AS be FROM tl),\npb AS (\n  SELECT i.bucket AS time,\n    SUM(CASE WHEN e.sta_id = 6 THEN\n      EXTRACT(EPOCH FROM (LEAST(i.be, COALESCE(e.ns, i.be)) - GREATEST(i.bucket, e.sta_bgn)))\n    ELSE 0 END) AS sec\n  FROM iv i LEFT JOIN ordered e ON e.sta_bgn < i.be AND COALESCE(e.ns, i.be) > i.bucket\n  GROUP BY i.bucket\n),\npc AS (SELECT time, sec / 3600 * ${taxa_producao} AS produced FROM pb)\nSELECT time, SUM(produced) OVER (ORDER BY time) AS producao_acumulada FROM pc ORDER BY time",
+          "refId": "A"
+        }
+      ],
+      "title": "Accumulated",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": true,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "dark-green",
+                "value": 2
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 7,
+        "x": 7,
+        "y": 9
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS ciclos_completos FROM status\nWHERE sta_id = 4 AND un_id = 801 AND ent_id = 1 AND $__timeFilter(sta_bgn)",
+          "refId": "A"
+        }
+      ],
+      "title": "Cycles",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": true,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "dark-green",
+                "value": 2
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 7,
+        "x": 7,
+        "y": 12
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^duracao_media_minutos$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH c AS (\n  SELECT s.sta_bgn AS ic, MIN(f.sta_end) AS fc\n  FROM status s LEFT JOIN status f\n    ON f.sta_bgn > s.sta_bgn AND f.sta_id = 6 AND f.un_id = s.un_id AND f.ent_id = s.ent_id\n  WHERE s.sta_id = 4 AND s.un_id = 801 AND s.ent_id = 1 AND s.sta_bgn <= $__timeTo()\n  GROUP BY s.sta_bgn\n)\nSELECT AVG(EXTRACT(EPOCH FROM (fc - ic))/60) AS duracao_media_minutos FROM c WHERE ic >= $__timeFrom()",
+          "refId": "A"
+        }
+      ],
+      "title": "Cycles (avg duration)",
+      "type": "stat"
+    }
+  ],
+  "preload": false,
+  "refresh": "10s",
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "2500",
+          "value": "2500"
+        },
+        "label": "Taxa de Produ\u00e7\u00e3o (emb/h)",
+        "name": "taxa_producao",
+        "query": "2500",
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-2d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Production Overview",
+  "uid": "ad29mzk",
+  "version": 1,
+  "weekStart": ""
+}

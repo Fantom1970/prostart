@@ -1,0 +1,222 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations and Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 998341690720256,
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "PE02C6D58FFD076CD"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 70,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "#808080",
+                  "text": "Sem Producao"
+                },
+                "1": {
+                  "color": "#FFD700",
+                  "text": "CIP"
+                },
+                "10": {
+                  "color": "#8A2BE2",
+                  "text": "Recirc. Tanque"
+                },
+                "12": {
+                  "color": "#FF4500",
+                  "text": "Manutencao"
+                },
+                "4": {
+                  "color": "#FFA500",
+                  "text": "Esterilizacao"
+                },
+                "5": {
+                  "color": "#1E90FF",
+                  "text": "Setup"
+                },
+                "6": {
+                  "color": "#32CD32",
+                  "text": "Producao"
+                },
+                "9": {
+                  "color": "#9370DB",
+                  "text": "Recirc. Past."
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "alignValue": "left",
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.8,
+        "showValue": "never",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.0.2",
+      "targets": [
+        {
+          "dataset": "",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "PE02C6D58FFD076CD"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT s.sta_bgn AS time, COALESCE(s.sta_end, NOW()) AS time_end, s.sta_id AS state, u.un_nam AS unit, CASE u.un_id WHEN 600 THEN 1 WHEN 700 THEN 2 WHEN 803 THEN 3 WHEN 6100 THEN 4 WHEN 903 THEN 5 WHEN 913 THEN 6 WHEN 923 THEN 7 WHEN 933 THEN 8 WHEN 943 THEN 9 END AS sort_order FROM status s JOIN units u ON s.un_id = u.un_id WHERE s.ent_id = 1 AND s.un_id IN (600, 700, 803, 6100, 903, 913, 923, 933, 943) AND s.sta_bgn >= $__timeFrom() AND s.sta_bgn <= $__timeTo() ORDER BY sort_order, s.sta_bgn",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Timelines por Equipamento Linha 3",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "sort_order": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "sort_order": ""
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "unit"
+            ],
+            "keepFields": false
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "state ?(.*)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "state-timeline"
+    }
+  ],
+  "preload": false,
+  "refresh": "30s",
+  "schemaVersion": 42,
+  "tags": [
+    "prostart"
+  ],
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Status Line 3",
+  "uid": "adc58hk",
+  "version": 3
+}
