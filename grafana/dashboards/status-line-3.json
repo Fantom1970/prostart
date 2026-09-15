@@ -18,7 +18,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 998341690720256,
   "liveNow": false,
   "panels": [
     {
@@ -218,5 +217,5 @@
   "timezone": "browser",
   "title": "Status Line 3",
   "uid": "adc58hk",
-  "version": 3
+  "version": 2
 }
